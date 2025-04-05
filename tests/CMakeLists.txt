@@ -16,12 +16,12 @@ find_package(Catch2 CONFIG REQUIRED)
 find_package(Threads REQUIRED)
 
 target_link_libraries(tests PRIVATE
-                      libtoypp::libtoypp
+                      ${PROJECT_NAME}::${PROJECT_NAME}
                       Threads::Threads
                       Catch2::Catch2
                       Catch2::Catch2WithMain)
 
-if(LIBTOYPP_OPT_COVERAGE)
+if (TOYPP_COVERAGE)
     if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
         message(FATAL_ERROR "code-coverage with non-Debug build is inaccurate.")
     endif()
@@ -41,4 +41,3 @@ include(CTest)
 include(Catch)
 
 catch_discover_tests(tests)
-
