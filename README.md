@@ -27,6 +27,7 @@ This codebase is my playground to make stuff I like... or in summary: toy coding
  - [x] Queue / MTQueue (thread-safe)
  - [ ] Deque
  - [ ] PriorityQueue
+ - [x] PubSubQueue
 
  - [ ] EventSystem
  - [x] ThreadPool
