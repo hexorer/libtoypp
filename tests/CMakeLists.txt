@@ -7,6 +7,7 @@ target_sources(tests PRIVATE
     queue.cpp
     uniqueptr.cpp
     buffer.cpp
+    immutable_string.cpp
     threaded_doublebuffer.cpp
     threaded_queue.cpp
     threaded_spsc_ringbuffer.cpp
