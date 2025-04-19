@@ -21,7 +21,7 @@ This codebase is my playground to make stuff I like... or in summary: toy coding
  - [x] UniquePtr (`UniquePtr<T[], Deleter>` isn't implemented yet.)
  - [x] SharedPtr
 
- - [ ] String
+ - [x] ImmutableString (shallow-copy with refcounting)
  - [ ] DynamicVector
 
  - [x] Queue / MTQueue (thread-safe)
