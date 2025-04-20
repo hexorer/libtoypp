@@ -6,6 +6,7 @@ target_sources(tests PRIVATE
     span.cpp
     queue.cpp
     uniqueptr.cpp
+    sharedptr.cpp
     buffer.cpp
     threaded_doublebuffer.cpp
     threaded_queue.cpp

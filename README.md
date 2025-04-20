@@ -19,7 +19,7 @@ This codebase is my playground to make stuff I like... or in summary: toy coding
  - [x] RingBuffer (SPSC byte sequence read/write)
 
  - [x] UniquePtr (`UniquePtr<T[], Deleter>` isn't implemented yet.)
- - [ ] SharedPtr
+ - [x] SharedPtr
 
  - [ ] String
  - [ ] DynamicVector
