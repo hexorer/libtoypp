@@ -87,10 +87,30 @@ class SharedPtr {
   SharedPtr(Y* ptr) : SharedPtr(ptr, k_default_deleter) {}
 
   template <typename F, std::enable_if_t<std::is_invocable_v<F, value_type*>, int> = 0>
-  SharedPtr(value_type* ptr, F&& deleter) : _ptr(ptr), _shared(ptr ? new details::SharedPtrShared{.deleter = std::forward<F>(deleter)} : nullptr) {}
+  SharedPtr(value_type* ptr, F&& deleter) : _ptr(ptr), _shared(nullptr) {
+    if (!ptr) {
+      return;
+    }
+    try {
+      _shared = new details::SharedPtrShared{.deleter = std::forward<F>(deleter)};
+    } catch (...) {
+      deleter(_ptr);
+      throw;
+    }
+  }
 
   template <typename Y, typename F, std::enable_if_t<std::is_invocable_v<F, value_type*>, int> = 0>
-  SharedPtr(Y* ptr, F&& deleter) : _ptr(ptr), _shared(ptr ? new details::SharedPtrShared{.deleter = std::forward<F>(deleter)} : nullptr) {}
+  SharedPtr(Y* ptr, F&& deleter) : _ptr(ptr), _shared(nullptr) {
+    if (!ptr) {
+      return;
+    }
+    try {
+      _shared = new details::SharedPtrShared{.deleter = std::forward<F>(deleter)};
+    } catch (...) {
+      deleter(_ptr);
+      throw;
+    }
+  }
 
   SharedPtr(const SharedPtr& other) noexcept : _ptr(other._ptr), _shared(other._shared) {
     if (_shared) {
