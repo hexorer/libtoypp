@@ -8,6 +8,7 @@ This codebase is my playground to make stuff I like... or in summary: toy coding
 
  - [x] Array (static size)
  - [x] FlatMap
+ - [x] FixedHashMap (Open-Addressing)
 
  - [x] Math (simple stuff)
  - [x] Matrix (static size)
