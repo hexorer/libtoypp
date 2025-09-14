@@ -14,7 +14,7 @@ TEST_CASE("tpp::DoubleBuffer") {
   REQUIRE(buff_a_ptr != buff_b_ptr);
 
   for (int i = 0; i < 10; ++i) {
-    std::thread a([&] { dbuff.writer_arrive(); });
+    std::thread a([&] { dbuff.writer_arrive_and_wait(); });
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
