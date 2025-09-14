@@ -21,56 +21,53 @@ namespace tpp {
 template <typename BufferT>
 class DoubleBuffer {
  public:
-  using buffer_type = std::remove_reference_t<BufferT>;
+  using buffer_type = BufferT;
 
  private:
-  buffer_type buffers_[2] = {};
-  std::size_t buffer_reader_index_ = 1;
-
-  std::atomic<bool> flag_{false};  // false => sync'ed, true => awaiting.
+  buffer_type _buffers[2] = {};
+  std::size_t _index = 0;
+  std::atomic<bool> _waiting{false};
 
  public:
   DoubleBuffer() {}
 
   DoubleBuffer(buffer_type a, buffer_type b)
-    : buffers_{ std::move(a), std::move(b) }
+    : _buffers{std::move(a), std::move(b)}
   {}
 
-  void reader_arrive() noexcept {
-    bool expected = true;
-    if (flag_.compare_exchange_weak(expected, false)) {
-      buffer_reader_index_ = (buffer_reader_index_ + 1) & 1;
+  bool reader_arrive() noexcept {
+    if (_waiting.load(std::memory_order_acquire)) {
+      _index ^= 1ul;
+      _waiting.store(false, std::memory_order_release);
+      return true;
     }
+    return false;
   }
 
-  void writer_arrive() noexcept {
-    // indicate
-    flag_ = true;
-    // wait
-    bool expected = false;
-    while (!flag_.compare_exchange_weak(expected, true)) {
-      expected = false;
+  void writer_arrive_and_wait() noexcept {
+    _waiting.store(true, std::memory_order_release);
+    while (_waiting.load(std::memory_order_acquire)) {
+      // do nothing.
     }
   }
 
   buffer_type& reader_buffer() noexcept {
-    return buffers_[buffer_reader_index_ & 1];
+    return _buffers[_index];
   }
 
   const buffer_type& reader_buffer() const noexcept {
-    return buffers_[buffer_reader_index_ & 1];
+    return _buffers[_index];
   }
 
   buffer_type& writer_buffer() noexcept {
-    return buffers_[(buffer_reader_index_ + 1) & 1];
+    return _buffers[_index ^ 1ul];
   }
 
   const buffer_type& writer_buffer() const noexcept {
-    return buffers_[(buffer_reader_index_ + 1) & 1];
+    return _buffers[_index ^ 1ul];
   }
 };
 
 }  // namespace tpp
 
 #endif  // TOYPP_THREADED_DOUBLEBUFFER_HPP_
-

@@ -12,6 +12,7 @@ project(toypp CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
+option(TOYPP_BENCHMARK "Build benchmarks" ${TOYPP_MAIN_PROJECT})
 option(TOYPP_TESTS "Build and perform tests" ${TOYPP_MAIN_PROJECT})
 option(TOYPP_COVERAGE "Add coverage" OFF)
 
@@ -25,6 +26,10 @@ target_include_directories(
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
+
+if (TOYPP_BENCHMARK)
+  add_subdirectory("benchmark")
+endif()
 
 if (TOYPP_TESTS)
   enable_testing()
