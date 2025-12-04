@@ -1,12 +1,9 @@
 #include <catch2/catch_all.hpp>
 
-#include <string>
-#include <string_view>
-
 #include "toypp/immutable_string.hpp"
 
 TEST_CASE("tpp::ImmutableString") {
-  const char* short_c_str = "hello";
+  const char* short_c_str = "hello hello";
   const char* long_c_str = "a quick brown fox quickly jumped over the lazy dog.";
 
   SECTION("semantics") {
@@ -45,13 +42,15 @@ TEST_CASE("tpp::ImmutableString") {
   }
 
   SECTION("index") {
-    CHECK(tpp::ImmutableString(short_c_str)[0] == short_c_str[0]);
-    CHECK(tpp::ImmutableString(short_c_str)[1] == short_c_str[1]);
-    CHECK(tpp::ImmutableString(short_c_str)[std::strlen(short_c_str)-1] == short_c_str[std::strlen(short_c_str)-1]);
+    tpp::ImmutableString short_immutable_str{short_c_str};
+    CHECK(short_immutable_str[0] == short_c_str[0]);
+    CHECK(short_immutable_str[1] == short_c_str[1]);
+    CHECK(short_immutable_str[std::strlen(short_c_str)-1] == short_c_str[std::strlen(short_c_str)-1]);
 
-    CHECK(tpp::ImmutableString(long_c_str)[0] == long_c_str[0]);
-    CHECK(tpp::ImmutableString(long_c_str)[1] == long_c_str[1]);
-    CHECK(tpp::ImmutableString(long_c_str)[std::strlen(long_c_str)-1] == long_c_str[std::strlen(long_c_str)-1]);
+    tpp::ImmutableString long_immutable_str{long_c_str};
+    CHECK(long_immutable_str[0] == long_c_str[0]);
+    CHECK(long_immutable_str[1] == long_c_str[1]);
+    CHECK(long_immutable_str[std::strlen(long_c_str)-1] == long_c_str[std::strlen(long_c_str)-1]);
   }
 
   SECTION("comparison") {
